@@ -8,7 +8,7 @@ spring:
     driver-class-name: com.mysql.cj.jdbc.Driver
     url: jdbc:mysql://localhost:3306/testdb?useSSL=false&serverTimezone=UTC
     username:
-    password: 
+    password:
     #password becareful
   thymeleaf:
     cache: false
@@ -17,6 +17,9 @@ spring:
     hibernate:
       ddl-auto: validate
     show-sql: true
+    sql:
+      init:
+        mode: always
     properties:
       hibernate:
         format_sql: true

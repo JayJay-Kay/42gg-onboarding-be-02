@@ -19,7 +19,7 @@ import java.util.Optional;
 public class BoardService {
     private final BoardRepository boardRepository;
     public void save(BoardDTO boardDTO) {
-        BoardEntity boardEntity = BoardEntity.toSaveEntity(boardDTO);
+        BoardEntity boardEntity = BoardEntity.toEntity(boardDTO, null);
         boardRepository.save(boardEntity);
     }
 
@@ -50,9 +50,11 @@ public class BoardService {
     }
 
     public BoardDTO update(BoardDTO boardDTO) {
-        BoardEntity boardEntity = BoardEntity.toUpdateEntity(boardDTO);
-        boardRepository.save(boardEntity);
-        return findById(boardDTO.getId());
+        Optional<BoardEntity> existingEntityOpt = boardRepository.findById(boardDTO.getId());
+        BoardEntity existingEntity = existingEntityOpt.get();
+        BoardEntity updatedEntity = BoardEntity.toEntity(boardDTO, existingEntity); // Indicate update
+        boardRepository.save(updatedEntity);
+        return BoardDTO.toBoardDTO(updatedEntity); // Convert updated entity back to DTO
     }
 
     public void delete(Long id) {

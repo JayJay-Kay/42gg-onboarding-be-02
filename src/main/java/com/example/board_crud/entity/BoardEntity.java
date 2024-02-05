@@ -29,24 +29,23 @@ public class BoardEntity extends BaseEntity {
     @Column
     private int boardHits;
 
-    public static BoardEntity toSaveEntity(BoardDTO boardDTO) {
-        BoardEntity boardEntity = new BoardEntity();
+    public static BoardEntity toEntity(BoardDTO boardDTO, BoardEntity boardEntity) {
+        // Initialize entity if null, indicating a creation operation
+        if (boardEntity == null) {
+            boardEntity = new BoardEntity();
+            // Set default values specific to new entities
+            boardEntity.setBoardHits(0);
+        } else {
+            // update hits from DTO
+            boardEntity.setBoardHits(boardDTO.getBoardHits());
+        }
+        // Common mapping logic
+        boardEntity.setId(boardDTO.getId()); // Set ID if updating. This is harmless for creation as it should be null or ignored
         boardEntity.setBoardWriter(boardDTO.getBoardWriter());
         boardEntity.setBoardPass(boardDTO.getBoardPass());
         boardEntity.setBoardTitle(boardDTO.getBoardTitle());
         boardEntity.setBoardContents(boardDTO.getBoardContents());
-        boardEntity.setBoardHits(0);
-        return boardEntity;
-    }
 
-    public static BoardEntity toUpdateEntity(BoardDTO boardDTO) {
-        BoardEntity boardEntity = new BoardEntity();
-        boardEntity.setId(boardDTO.getId());
-        boardEntity.setBoardWriter(boardDTO.getBoardWriter());
-        boardEntity.setBoardPass(boardDTO.getBoardPass());
-        boardEntity.setBoardTitle(boardDTO.getBoardTitle());
-        boardEntity.setBoardContents(boardDTO.getBoardContents());
-        boardEntity.setBoardHits(boardDTO.getBoardHits());
         return boardEntity;
     }
 }
